@@ -75,6 +75,25 @@ export default async function AIServicesPage() {
             </div>
           </div>
 
+          {/* Link to Agency AI Usage */}
+          <Link
+            href="/agency-ai-usage"
+            className="block bg-white border-2 border-gov-navy-800 rounded-lg p-6 mb-6 hover:border-gov-navy-700 hover:shadow-md transition-all"
+          >
+            <div className="flex items-center justify-between">
+              <div>
+                <h2 className="text-2xl font-bold text-gov-navy-900 mb-2">Federal Agency AI Usage</h2>
+                <p className="text-gov-slate-600">
+                  See how federal agencies are adopting AI internally with staff chatbots and coding assistants
+                </p>
+              </div>
+              <div className="text-right">
+                <div className="text-sm text-gov-slate-500 mb-1">34 agencies tracked</div>
+                <div className="text-sm font-semibold text-gov-navy-700">View Agency Usage →</div>
+              </div>
+            </div>
+          </Link>
+
           {/* Services Table */}
           {services.length > 0 ? (
             <AIServicesTable services={services} />
