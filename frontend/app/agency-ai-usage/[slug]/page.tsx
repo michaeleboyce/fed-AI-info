@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getAgencyBySlug, getAgencyMatches } from '@/lib/agency-db';
+import Breadcrumbs from '@/components/Breadcrumbs';
 
 export default async function AgencyDetailPage({
   params,
@@ -20,9 +21,12 @@ export default async function AgencyDetailPage({
     <div className="min-h-screen bg-gov-slate-50">
       <header className="bg-gov-navy-900 text-white py-6 border-b-4 border-gov-navy-700">
         <div className="container mx-auto px-4">
-          <Link href="/agency-ai-usage" className="text-gov-navy-100 hover:text-white mb-2 inline-block text-sm font-medium">
-            ← Back to Agency AI Usage
-          </Link>
+          <Breadcrumbs
+            items={[
+              { label: 'Agency AI Usage', href: '/agency-ai-usage' },
+              { label: agency.agency_name, href: undefined },
+            ]}
+          />
           <h1 className="text-3xl font-bold">{agency.agency_name}</h1>
           <p className="text-gov-navy-100 mt-1">Internal AI Adoption Details</p>
         </div>

@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { getAIServices, getAIStats } from '@/lib/ai-db';
 import AIServicesTable from './AIServicesTable';
+import Breadcrumbs from '@/components/Breadcrumbs';
 
 export const dynamic = 'force-dynamic';
 
@@ -13,9 +14,11 @@ export default async function AIServicesPage() {
       <div className="min-h-screen bg-gov-slate-50">
         <header className="bg-gov-navy-900 text-white py-6 border-b-4 border-gov-navy-700">
           <div className="container mx-auto px-4">
-            <Link href="/" className="text-gov-navy-100 hover:text-white mb-2 inline-block text-sm font-medium">
-              ← Back to All Products
-            </Link>
+            <Breadcrumbs
+              items={[
+                { label: 'AI Services', href: undefined },
+              ]}
+            />
             <h1 className="text-3xl font-bold">AI Services in FedRAMP</h1>
             <p className="text-gov-navy-100 mt-2">
               FedRAMP-authorized AI, Generative AI, and LLM services

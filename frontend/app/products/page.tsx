@@ -2,6 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import Link from 'next/link';
 import ProductTable from '@/components/ProductTable';
+import Breadcrumbs from '@/components/Breadcrumbs';
 
 interface Product {
   id: string;
@@ -35,9 +36,11 @@ export default async function ProductsPage() {
     <div className="min-h-screen bg-gov-slate-50">
       <header className="bg-gov-navy-900 text-white py-6 border-b-4 border-gov-navy-700">
         <div className="container mx-auto px-4">
-          <Link href="/" className="text-gov-navy-100 hover:text-white mb-2 inline-block text-sm font-medium">
-            ← Back to Home
-          </Link>
+          <Breadcrumbs
+            items={[
+              { label: 'Products', href: undefined },
+            ]}
+          />
           <h1 className="text-3xl font-bold">All FedRAMP Products</h1>
           <p className="text-gov-navy-100 mt-2">
             Browse, search, and filter all {products.length} FedRAMP authorized cloud services

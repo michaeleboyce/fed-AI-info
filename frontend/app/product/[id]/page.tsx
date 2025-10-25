@@ -2,6 +2,7 @@ import Link from 'next/link';
 import fs from 'fs';
 import path from 'path';
 import { notFound } from 'next/navigation';
+import Breadcrumbs from '@/components/Breadcrumbs';
 
 interface Product {
   id: string;
@@ -51,9 +52,12 @@ export default async function ProductPage({
     <div className="min-h-screen bg-gov-slate-50">
       <header className="bg-gov-navy-900 text-white py-6 border-b-4 border-gov-navy-700">
         <div className="container mx-auto px-4">
-          <Link href="/" className="text-gov-navy-100 hover:text-white mb-2 inline-block text-sm font-medium">
-            ← Back to Home
-          </Link>
+          <Breadcrumbs
+            items={[
+              { label: 'Products', href: '/products' },
+              { label: product.cso, href: undefined },
+            ]}
+          />
           <h1 className="text-3xl font-bold">{product.cso}</h1>
           <p className="text-gov-navy-100 mt-1">{product.csp}</p>
         </div>

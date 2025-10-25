@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { getAgencies, getAgencyStats } from '@/lib/agency-db';
 import AgencyAITable from './AgencyAITable';
+import Breadcrumbs from '@/components/Breadcrumbs';
 
 export const dynamic = 'force-dynamic';
 
@@ -12,9 +13,11 @@ export default async function AgencyAIUsagePage() {
     <div className="min-h-screen bg-gov-slate-50">
       <header className="bg-gov-navy-900 text-white py-6 border-b-4 border-gov-navy-700">
         <div className="container mx-auto px-4">
-          <Link href="/" className="text-gov-navy-100 hover:text-white mb-2 inline-block text-sm font-medium">
-            ← Back to Home
-          </Link>
+          <Breadcrumbs
+            items={[
+              { label: 'Agency AI Usage', href: undefined },
+            ]}
+          />
           <h1 className="text-3xl font-bold">Federal Agency AI Usage</h1>
           <p className="text-gov-navy-100 mt-2">
             How federal agencies are adopting AI internally - staff chatbots, coding assistants, and specialized tools
