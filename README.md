@@ -1,62 +1,15 @@
-# FedRAMP Marketplace Data Browser
+# FedRAMP AI Services Dashboard
 
-A comprehensive web application for browsing and managing FedRAMP (Federal Risk and Authorization Management Program) marketplace data.
+Comprehensive web application tracking AI adoption in federal government through FedRAMP-authorized services and agency implementations.
 
-## 📋 Overview
+## What It Does
 
-This project provides:
-- **Backend**: Python scripts to fetch and manage FedRAMP product data
-- **Database**: SQLite database with all 615 FedRAMP products
-- **Frontend**: Next.js web application for browsing, searching, and filtering products
-- **Data Source**: Official JSON API from GSA's FedRAMP marketplace
+1. **AI Services Catalog** - Claude Haiku 4.5 analysis of 615 FedRAMP products identifying AI/ML, Generative AI, and LLM services
+2. **Agency AI Tracking** - Database of 20+ federal agencies and their AI tool adoption
+3. **Products Browser** - Searchable catalog of all FedRAMP-authorized cloud services
+4. **Smart Matching** - Algorithm matching agencies to compatible FedRAMP services
 
-## 🏗️ Project Structure
-
-```
-fedramp/
-├── backend/              # Python data fetching & database management
-│   ├── db.py            # SQLite database schema and operations
-│   ├── load_csv.py      # Load data from CSV (legacy)
-│   ├── fetch_json.py    # Fetch data from official JSON API ⭐
-│   ├── scraper.py       # HTML scraper (not needed - use JSON instead)
-│   └── requirements.txt # Python dependencies
-├── data/                 # Data storage
-│   ├── fedramp.db       # SQLite database
-│   ├── fedramp_products.json # Latest JSON data from API
-│   └── html/            # (Optional) HTML files if manually collected
-├── frontend/             # Next.js web application
-│   ├── app/             # Next.js app directory
-│   ├── lib/             # Database utilities
-│   └── package.json     # Node dependencies
-└── README.md             # This file
-```
-
-## 🚀 Quick Start
-
-### Prerequisites
-- Python 3.8+
-- Node.js 18+ and pnpm
-- Git
-
-### 1. Fetch Latest Data
-
-```bash
-cd backend
-pip3 install -r requirements.txt
-python3 fetch_json.py
-```
-
-This fetches the latest data from the official FedRAMP JSON API:
-`https://raw.githubusercontent.com/GSA/marketplace-fedramp-gov-data/refs/heads/main/data.json`
-
-### 2. Load Data into Database
-
-```bash
-python3 load_csv.py  # If you have a CSV file
-# OR use the JSON data directly in the frontend
-```
-
-### 3. Start the Frontend
+## Quick Start
 
 ```bash
 cd frontend
@@ -64,126 +17,99 @@ pnpm install
 pnpm dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) in your browser.
+Open http://localhost:3000
 
-## 📊 Data Source
+## Main Features
 
-### Official JSON API ⭐ **RECOMMENDED**
+| Page | URL | Description |
+|------|-----|-------------|
+| Dashboard | `/` | Overview with statistics cards |
+| AI Services | `/ai-services` | AI/ML/GenAI/LLM services catalog |
+| Agencies | `/agency-ai-usage` | Federal agency AI adoption |
+| Products | `/products` | All 615 FedRAMP products |
+| Details | `/product/[id]` | Individual product pages |
 
-The best way to get FedRAMP data is from the official JSON API maintained by GSA:
+**Key Capabilities**:
+- Search across 10,000+ services
+- Filter by AI type (AI/ML, GenAI, LLM)
+- Sort by provider, product, service count, dates
+- Agency detail pages with FedRAMP recommendations
 
-- **URL**: `https://raw.githubusercontent.com/GSA/marketplace-fedramp-gov-data/refs/heads/main/data.json`
-- **GitHub**: https://github.com/GSA/marketplace-fedramp-gov-data
-- **Updates**: Regularly updated by GSA
-- **Data**: 615 products with 40+ fields per product
+## Tech Stack
 
-#### Available Fields:
-- Basic Info: `id`, `name`, `csp` (provider), `cso` (offering)
-- Status: `status`, `authorization`, `reuse`
-- Dates: `ready_date`, `auth_date`, `annual_assessment`
-- Technical: `service_model`, `deployment_model`, `impact_level`
-- Business: `uei`, `small_business`, `business_function`
-- Contact: `sales_email`, `security_email`, `website`
-- Description: `service_desc`, `fedramp_msg`
-- And many more...
+**Frontend**: Next.js 15, React 19, TypeScript, Tailwind CSS, better-sqlite3
+**Backend**: Python 3.8+, Anthropic Claude Haiku 4.5, SQLite
+**Data Source**: Official GSA JSON API (615 products, 40+ fields each)
 
-### Alternative: CSV Export
+## Architecture
 
-You can also download a CSV from the FedRAMP marketplace website, though it has fewer fields than the JSON API.
+```
+backend/          # Python data pipeline
+├── fetch_json.py           # Fetch from GSA API
+├── analyze_ai_services.py  # Claude AI analysis
+├── match_agencies_to_services.py  # Smart matching
+└── db.py                   # SQLite operations
 
-### HTML Scraping (Not Recommended)
+data/
+├── fedramp_products.json   # 615 products from GSA
+└── fedramp.db             # SQLite database
 
-The marketplace website has protection against automated scraping. See `backend/SCRAPING_NOTES.md` for details and alternatives.
-
-## 🔍 Features
-
-### Current Implementation
-- ✅ Fetch data from official JSON API
-- ✅ SQLite database with full schema
-- ✅ CSV import functionality
-- ✅ Next.js frontend setup
-- ✅ Database query utilities
-
-### Planned Features
-- 🔄 Product listing with search and filters
-- 🔄 Product detail pages
-- 🔄 Export functionality
-- 🔄 Custom column management
-- 🔄 Data refresh automation
-
-## 🛠️ Development
-
-### Backend Scripts
-
-**Fetch Latest JSON Data** (Recommended):
-```bash
-python3 backend/fetch_json.py
+frontend/         # Next.js application
+├── app/                    # Pages and routes
+├── components/             # Reusable components
+└── lib/                    # Database utilities
 ```
 
-**Load CSV to Database**:
+## Database
+
+**Tables**:
+- `products` - All FedRAMP product data (615 records)
+- `ai_service_analysis` - Claude's AI classifications
+- `agency_ai_usage` - Federal agency AI adoption
+- `agency_service_matches` - Agency-to-service recommendations
+- `product_ai_analysis_runs` - Analysis job history
+
+## Data Updates
+
 ```bash
-python3 backend/load_csv.py
+# Fetch latest FedRAMP data
+cd backend
+python3 fetch_json.py
+
+# Re-run AI analysis (~2-3 minutes)
+python3 analyze_ai_services.py --workers 10
 ```
 
-**Check Scraper Stats**:
-```bash
-python3 backend/scraper.py --stats
-```
+## AI Analysis
 
-### Database
+Uses Claude Haiku 4.5 to classify services:
+- **AI/ML** (Blue): Machine learning, computer vision, speech recognition
+- **GenAI** (Teal): Text/image/code generation
+- **LLM** (Indigo): Large language models, NLP
 
-The SQLite database (`data/fedramp.db`) contains:
-- All product information from CSV/JSON
-- Tracking for HTML scraping status
-- Timestamps for data updates
+**Performance**: 615 products in 2-3 minutes, ~$5-10 cost, 10 concurrent workers
 
-**Schema**:
-- `fedramp_id`: Unique product ID
-- `cloud_service_provider`: Provider name
-- `cloud_service_offering`: Product name
-- `service_description`: Detailed description
-- `status`: Authorization status
-- `service_model`: SaaS/PaaS/IaaS
-- Many more fields...
+## Deployment (Vercel)
 
-### Frontend
+- **Framework**: Next.js
+- **Root Directory**: `frontend`
+- **Build Command**: `pnpm run build`
+- **Install Command**: `pnpm install`
+- **Output Directory**: `.next` (default)
 
-Built with:
-- **Next.js 15** with App Router
-- **TypeScript** for type safety
-- **Tailwind CSS** for styling
-- **better-sqlite3** for database access
+**Note**: SQLite database must be included or migrate to PostgreSQL for production.
 
-## 📝 Notes
+## Documentation
 
-### Why Not Scrape HTML?
+- **README.md** (this file): Overview and setup
+- **FEATURES.md**: Detailed feature list
+- **QUICK_START.md**: Command reference
+- **AI_SERVICES_GUIDE.md**: AI analysis methodology
 
-The FedRAMP marketplace website has protection against automated scraping. When attempting to access pages programmatically, they return empty HTML.
+## Data Source
 
-**Solution**: Use the official JSON API instead! It's:
-- ✅ More reliable
-- ✅ More complete data
-- ✅ Officially supported
-- ✅ Regularly updated
-- ✅ No rate limiting issues
+Official GSA FedRAMP API: `https://raw.githubusercontent.com/GSA/marketplace-fedramp-gov-data/refs/heads/main/data.json`
 
-See `backend/SCRAPING_NOTES.md` for technical details.
+## License
 
-## 🤝 Contributing
-
-This is a personal project, but suggestions and improvements are welcome!
-
-## 📄 License
-
-This project is for personal/educational use. FedRAMP data is public domain as a US government resource.
-
-## 🔗 Resources
-
-- [FedRAMP Official Site](https://www.fedramp.gov/)
-- [FedRAMP Marketplace](https://marketplace.fedramp.gov/)
-- [Official JSON Data (GitHub)](https://github.com/GSA/marketplace-fedramp-gov-data)
-- [FedRAMP API Example](https://github.com/Rene2mt/marketplace-fedramp-api)
-
-## 📧 Questions?
-
-For questions about FedRAMP data or the marketplace, contact: info@FedRAMP.gov
+Personal/educational use. FedRAMP data is public domain.
